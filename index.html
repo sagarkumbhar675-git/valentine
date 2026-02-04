@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="robots" content="noindex">
   <title>For You ❤️</title>
-
   <style>
+    /* Body & card styling */
     body {
       margin: 0;
       height: 100vh;
@@ -16,28 +16,26 @@
       font-family: "Segoe UI", Arial, sans-serif;
       color: white;
       text-align: center;
+      overflow: hidden;
     }
-
     .card {
       background: rgba(255, 255, 255, 0.15);
       padding: 35px;
       border-radius: 22px;
       box-shadow: 0 15px 40px rgba(0,0,0,0.25);
       max-width: 320px;
+      animation: fadeIn 1.2s ease;
     }
-
     h1 {
       margin-top: 0;
       font-size: 28px;
     }
-
     p {
       font-size: 16px;
       line-height: 1.5;
     }
-
     button {
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 12px 26px;
       border: none;
       border-radius: 30px;
@@ -47,26 +45,64 @@
       color: #ff4d6d;
       transition: transform 0.2s ease;
     }
-
     button:hover {
       transform: scale(1.05);
     }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      bottom: 0;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-100vh); opacity: 0; }
+    }
   </style>
 </head>
-
 <body>
   <div class="card">
-    <h1>Hey ❤️</h1>
+    <h1>Hey Aisha ❤️</h1>
     <p>I made this little page just for you.</p>
     <p>Because sometimes feelings deserve code too.</p>
 
-    <button onclick="showMessage()">Click me</button>
+    <button onclick="yes()">Yes 💖</button>
+    <button onclick="no()">No 🙈</button>
+
+    <p style="font-size:12px; opacity:0.6;">
+      (If you’re reading this, you’re special.)
+    </p>
   </div>
 
   <script>
-    function showMessage() {
-      alert("Will you be my Valentine? 💖");
+    // Yes/No interactions
+    function yes() {
+      document.body.innerHTML = "<h1 style='text-align:center; margin-top:40vh;'>You just made my day 😍</h1>";
     }
+    function no() {
+      alert("That’s okay 🙂 Still glad you saw this.");
+    }
+
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (15 + Math.random()*15) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
+    setInterval(createHeart, 500);
   </script>
 </body>
 </html>

@@ -5,7 +5,6 @@
   <meta name="robots" content="noindex">
   <title>For You ❤️</title>
   <style>
-    /* Body & card styling */
     body {
       margin: 0;
       height: 100vh;
@@ -17,7 +16,9 @@
       color: white;
       text-align: center;
       overflow: hidden;
+      position: relative;
     }
+
     .card {
       background: rgba(255, 255, 255, 0.15);
       padding: 35px;
@@ -25,15 +26,13 @@
       box-shadow: 0 15px 40px rgba(0,0,0,0.25);
       max-width: 320px;
       animation: fadeIn 1.2s ease;
+      position: relative;
+      z-index: 1;
     }
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
-    }
-    p {
-      font-size: 16px;
-      line-height: 1.5;
-    }
+
+    h1 { margin-top: 0; font-size: 28px; }
+    p { font-size: 16px; line-height: 1.5; }
+
     button {
       margin-top: 15px;
       padding: 12px 26px;
@@ -44,18 +43,16 @@
       background: white;
       color: #ff4d6d;
       transition: transform 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.05);
+      position: relative;
     }
 
-    /* Fade-in animation */
+    button:hover { transform: scale(1.05); }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Floating hearts */
     .heart {
       position: fixed;
       font-size: 20px;
@@ -63,9 +60,17 @@
       animation: floatUp 4s linear forwards;
       pointer-events: none;
     }
+
     @keyframes floatUp {
       from { transform: translateY(0); opacity: 1; }
       to { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    /* Hide No button on mobile */
+    @media (max-width: 768px) {
+      #noBtn {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -75,8 +80,8 @@
     <p>I made this little page just for you.</p>
     <p>Because sometimes feelings deserve code too.</p>
 
-    <button onclick="yes()">Yes 💖</button>
-    <button onclick="no()">No 🙈</button>
+    <button id="yesBtn" onclick="yes()">Yes 💖</button>
+    <button id="noBtn">No 🙈</button>
 
     <p style="font-size:12px; opacity:0.6;">
       (If you’re reading this, you’re special.)
@@ -84,12 +89,9 @@
   </div>
 
   <script>
-    // Yes/No interactions
+    // Yes button works normally
     function yes() {
       document.body.innerHTML = "<h1 style='text-align:center; margin-top:40vh;'>You just made my day 😍</h1>";
-    }
-    function no() {
-      alert("That’s okay 🙂 Still glad you saw this.");
     }
 
     // Floating hearts
@@ -103,6 +105,25 @@
       setTimeout(() => heart.remove(), 4000);
     }
     setInterval(createHeart, 500);
+
+    // Make the No button dodge on desktop
+    const noBtn = document.getElementById("noBtn");
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+    if (!isMobile) {
+      noBtn.addEventListener("mouseenter", () => {
+        const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+        const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+        noBtn.style.position = "absolute";
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+      });
+    } else {
+      // On mobile, hide the No button completely
+      noBtn.style.display = "none";
+    }
   </script>
 </body>
 </html>
